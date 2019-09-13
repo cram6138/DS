@@ -7,7 +7,8 @@ import java.util.List;
 public class LinkedListV_2 implements Iterator<Object>{
 	private Node head;
 	private Node tail;
-	private int length;
+	private int size;
+	private int itrSize;
 	private Node itrNode;
 	
 	public void add(Object obj) {
@@ -20,7 +21,7 @@ public class LinkedListV_2 implements Iterator<Object>{
 			tail.next = node;
 			tail = node;
 		}
-		length++;
+		size++;
 	}
 	
 	public boolean contains(Object obj) {
@@ -36,7 +37,7 @@ public class LinkedListV_2 implements Iterator<Object>{
 	
 	public Object get(int index) {
 		Node node = head;
-		if(index >= length) {
+		if(index >= size) {
 			throw new ArrayIndexOutOfBoundsException("List index out of bounds");
 		}
 		int i=0;
@@ -69,7 +70,7 @@ public class LinkedListV_2 implements Iterator<Object>{
 	}
 	
 	public boolean isEmpty() {
-		return length == 0;
+		return size == 0;
 	}
 	
 	public void remove(Object obj) {
@@ -78,7 +79,7 @@ public class LinkedListV_2 implements Iterator<Object>{
 			if(node.value.equals(obj)) {
 				node.previous.next = node.next;
 				node.next.previous = node.previous;
-				length--;
+				size--;
 				return;
 			}
 			node = node.next;
@@ -86,19 +87,28 @@ public class LinkedListV_2 implements Iterator<Object>{
 	}
 	
 	public Iterator<Object> iterator() {
-		
+		this.itrSize = size;
+		this.itrNode = head;
 		return this;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return this.itrNode != null;
+		return this.itrSize > 0;
 	}
 
 	@Override
 	public Object next() {
-		
-		return this.itrNode.value;
+		Object value = this.itrNode.value;
+		this.itrNode = this.itrNode.next;
+		itrSize--;
+		return value;
+	}
+	
+	private static class Node {
+		Object value;
+		Node next;
+		Node previous;
 	}
 	
 		
