@@ -11,8 +11,7 @@ public class LinkedList implements Iterator<Object>{
 	private int itrSize;
 	
 	public void add(Object obj) {
-		Node node = new Node();
-		node.value = obj;
+		Node node = new Node(obj);
 		node.previous = tail;
 		if (head == null) {
 			tail = head = node;
@@ -34,6 +33,16 @@ public class LinkedList implements Iterator<Object>{
 	
 	public boolean isEmpty() {
 		return size == 0;
+	}
+	
+	public boolean insert(Object obj, int index) {
+		Node node = new Node(obj);
+		Node idxNode = this.getIndexedNode(index);
+		node.previous = idxNode.previous;
+		idxNode.previous = idxNode.previous.next = node;
+		node.next = idxNode;
+		node.previous = idxNode.previous;
+		return true;
 	}
 	
 	public int indexOf(Object obj) {
@@ -126,5 +135,10 @@ public class LinkedList implements Iterator<Object>{
 		Node next;
 		Node previous;
 		Object value;
+		
+		public Node(Object obj) {
+			this.value = obj;
+		}
+		
 	}
 }
